@@ -1,0 +1,59 @@
+---
+title: Safe Handling of Slices and Maps in Go
+description: Prevent unintended side effects by copying slices and maps received as arguments to maintain data integrity in Go.
+tags: slices, maps, argument safety, data integrity
+author: douglasmakey
+---
+
+When you receive a slice or map as an argument in Go, keep in mind that it's passed by reference. This means that if you store the reference, any modifications to the original slice or map outside your function will affect your stored data. To prevent this, create a copy before storing it.
+
+## Example: Avoiding Side Effects
+
+Here's how you could implement this with a LoadBalancer struct that stores server IPs. By copying the slice, we avoid any unintended modifications.
+
+```go
+type LoadBalancer struct {
+    servers []string
+}
+
+func (lb *LoadBalancer) SetServers(servers []string) {
+    lb.servers = make([]string, len(servers))
+    copy(lb.servers, servers)
+}
+
+func main() {
+    serverList := []string{"192.168.1.1", "192.168.1.2"}
+    lb := LoadBalancer{}
+    lb.SetServers(serverList)
+
+    // Modify serverList without affecting lb's servers
+    serverList[0] = "10.0.0.1"
+
+    fmt.Println(lb.servers) // Output: ["192.168.1.1", "192.168.1.2"]
+}
+```
+
+In this example, `SetServers` creates a copy of `servers` before storing it in `lb.servers`, ensuring that changes to `serverList` outside the `LoadBalancer` do not affect the stored IPs.
+
+## Maps Work the Same Way
+
+The same applies to maps, as they're also reference types. To prevent external modifications, create a new map and copy values:
+
+```go
+type LoadBalancer struct {
+    config map[string]string
+}
+
+func (lb *LoadBalancer) SetConfig(config map[string]string) {
+    lb.config = make(map[string]string, len(config))
+    for key, value := range config {
+        lb.config[key] = value
+    }
+}
+```
+
+By copying the `config` map, any changes to the original map won't affect the `LoadBalancer`'s stored configuration.
+
+## Takeaway
+
+When storing slices or maps passed as arguments, copy them to maintain data integrity. This practice ensures your data remains stable, preventing unintended side effects from external modifications.

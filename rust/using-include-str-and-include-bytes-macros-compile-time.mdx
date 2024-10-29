@@ -1,0 +1,55 @@
+---
+title: Using include_str!() and include_bytes!() for Compile-Time File Embedding
+description: Learn how to embed file content at compile time in Rust using include_str!() and include_bytes!() macros.
+tags: macros, compile-time, file embedding, constants
+author: douglasmakey
+---
+
+In Rust, the `include_str!()` and `include_bytes!()` macros allow you to read the contents of a file at compile time and store it in a constant. This approach can be highly efficient for embedding static data, such as configuration files or resource files, directly into your application.
+
+## **When to Use include_str!() and include_bytes!()**
+
+- `include_str!()` is ideal for text files, storing the file content as a UTF-8 `&'static str`.
+- `include_bytes!()` is useful for binary data, storing the content as a `&'static [u8]`.
+
+By embedding files at compile time, you avoid runtime file reads and guarantee that the file content is available wherever your code runs.
+
+## Example: Using include_str!() for Text
+
+Let's say you have a configuration file named config.txt:
+    
+```txt
+    api_key=12345
+endpoint=https://api.example.com
+```
+
+You can embed it directly in your Rust code like this:
+
+```rust
+const CONFIG: &str = include_str!("config.txt");
+
+fn main() {
+    println!("Config Data:\n{}", CONFIG);
+}
+```
+
+With this, `CONFIG` now holds the content of `config.txt` as a `&'static str`, making it available for use without file I/O at runtime.
+
+## Example: Using include_bytes!() for Binary Data
+
+For binary files like images or compiled assets, use `include_bytes!()`:
+
+```rust
+const LOGO: &[u8] = include_bytes!("logo.png");
+
+fn main() {
+    println!("Logo file size: {} bytes", LOGO.len());
+}
+```
+
+## Takeaway
+
+With `include_str!()` and `include_bytes!()`, you can embed files into your Rust application at compile time, reducing runtime dependencies and enhancing performance. This is particularly useful for configuration files, resources, and static data that won't change frequently.
+
+
+

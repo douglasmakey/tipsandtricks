@@ -1,0 +1,39 @@
+---
+title: Optimizing Large Indexes in PostgreSQL with hashtext()
+description: "Use PostgreSQL hashtext() to reduce index size for large text columns. Learn how to apply it in your index and search queries, with important considerations."
+tags: optimization, indexing, hash functions, query performance
+author: douglasmakey
+---
+
+When working with large text columns in PostgreSQL, indexing can become a storage and performance challenge. PostgreSQL's `hashtext()` function offers a solution by allowing you to create smaller, hash-based indexes for large columns. However, as `hashtext()` is an internal function, it may change between PostgreSQL versions, so use it with caution.
+
+## How hashtext() Works
+
+The `hashtext()` function produces a `32-bit hash` for a given text value, providing a fixed-size integer representation. By indexing the hash instead of the full text, you reduce the size of the index and optimize storage.
+
+## Example: Using hashtext() to Index Large Text Fields
+
+Suppose you have a `users` table with a large `email` field. Instead of indexing the entire text, you can index a hashed version of it:
+
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT
+);
+
+-- Create an index on the hashed email
+CREATE INDEX idx_email_hash ON users (hashtext(email));
+```
+
+With this approach, you store and index only the hashed email values. This can significantly reduce the index size for large text fields like emails or URLs.
+
+## Important Considerations
+
+- **Hash Collisions:** Since `hashtext()` returns a 32-bit hash, there's a small chance of hash collisions. This is why we combine the hash match with an exact text match to avoid false positives.
+- **Internal Function:** `hashtext()` is an internal PostgreSQL function, meaning its behavior could change between versions. PostgreSQL has previously modified the output of `hashtext()`, so it's best not to rely on it in applications where consistency across versions is critical.
+- **Lookup Complexity:** You'll need to search on the hashed column for filtering, as the original text won't match the hash directly.
+
+## Takeaway
+
+Using `hashtext()` can reduce index size on large text columns and improve query performance in PostgreSQL. Be cautious of hash collisions, and remember that `hashtext()` is an internal function that may change across PostgreSQL versions. Use this approach primarily when storage efficiency is a priority over potential compatibility risks.
+
