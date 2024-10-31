@@ -54,6 +54,4 @@ func (lb *LoadBalancer) SetConfig(config map[string]string) {
 
 By copying the `config` map, any changes to the original map won't affect the `LoadBalancer`'s stored configuration.
 
-## Takeaway
-
 When storing slices or maps passed as arguments, copy them to maintain data integrity. This practice ensures your data remains stable, preventing unintended side effects from external modifications.

@@ -18,8 +18,8 @@ By embedding files at compile time, you avoid runtime file reads and guarantee t
 
 Let's say you have a configuration file named config.txt:
     
-```txt
-    api_key=12345
+```text
+api_key=12345
 endpoint=https://api.example.com
 ```
 
@@ -46,8 +46,6 @@ fn main() {
     println!("Logo file size: {} bytes", LOGO.len());
 }
 ```
-
-## Takeaway
 
 With `include_str!()` and `include_bytes!()`, you can embed files into your Rust application at compile time, reducing runtime dependencies and enhancing performance. This is particularly useful for configuration files, resources, and static data that won't change frequently.
 

@@ -10,10 +10,9 @@ In Go, verifying interface compliance at compile time is a simple but powerful p
 ## When to Verify Interface Compliance
 
 Use compile-time checks for:
-
-**Exported types that need to implement an interface** as part of their API contract.
-**Groups of types** that all need to meet the same interface requirements, whether exported or unexported.
-**Critical cases where breaking an interface implementation** would impact the reliability of your application.
+- **Exported types that need to implement an interface** as part of their API contract.
+- **Groups of types** that all need to meet the same interface requirements, whether exported or unexported.
+- **Critical cases where breaking an interface implementation** would impact the reliability of your application.
 
 ## Example: Good
 
@@ -36,7 +35,5 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 ## Explanation
 
 The line `var _ http.Handler = (*Handler)(nil)` will fail at compile time if `*Handler` ever stops implementing `http.Handler`. For pointer types (e.g., *Handler), slices, or maps, use nil as the zero value on the right side of the assignment. For struct types, use an empty struct {}.
-
-## Takeaway
 
 Using compile-time checks for interface compliance makes your Go code more robust and predictable, saving you from runtime surprises and enforcing your API contracts.

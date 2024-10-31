@@ -15,7 +15,7 @@ The `flatten` method is available on `Option<Option<T>>`, making it easy to unwr
 
 Suppose you're querying an optional configuration value that's itself optional:
 
-``rust
+```rust
 fn get_optional_config() -> Option<Option<String>> {
     Some(Some("ConfigValue".to_string()))
 }
@@ -59,8 +59,6 @@ fn main() {
 ```
 
 In this example, `get_username` returns an `Option<String>`. We use `and_then` to validate the username, and `map` to format the output only if all previous checks succeeded.
-
-## Takeaway
 
 By using `flatten` and `and_then`, you can handle nested `Option` values and chain operations in Rust, making your code cleaner and more idiomatic. `flatten` simplifies unwrapping, while `and_then` allows for concise chaining of operations on `Option` values.
 
