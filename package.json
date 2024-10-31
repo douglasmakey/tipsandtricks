@@ -1,0 +1,15 @@
+{
+  "name": "tipsandtricks",
+  "version": "1.0.0",
+  "description": "Welcome to the Community Tips and Tricks repository! This is a collaborative space where developers can share their best practices, tips, and tricks for various programming languages and technologies. These contributions will be displayed on the [KungFuDev Tips](https://www.kungfudev.com/tips) website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "jest": "^29.7.0"
+  }
+}
